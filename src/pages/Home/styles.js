@@ -19,3 +19,25 @@ export const Title = styled.h1`
     margin-top: 3px;
   }
 `
+
+export const Form = styled.form`
+  margin-top: 20px;
+  width: 100%;
+`
+
+export const InputForm = styled.input`
+  width: 93%;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+`
+
+export const Button = styled.button`
+  padding: 9px 12px;
+  background-color: #171738;
+  color: white;
+  border: none;
+  font-size: 16px;
+  margin-left: 5px;
+  border-radius: 3px;
+`

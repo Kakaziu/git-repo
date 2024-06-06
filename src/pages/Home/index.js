@@ -1,5 +1,5 @@
 import { FaGithub } from 'react-icons/fa'
-import { Container, Title } from "./styles"
+import { Button, Container, Form, InputForm, Title } from "./styles"
 
 function Home() {
   return(
@@ -8,6 +8,10 @@ function Home() {
         <FaGithub size='22'/>
         <span>Meus repositórios</span>
       </Title>
+      <Form>
+        <InputForm type='text' placeholder='Adicionar repositório'/>
+        <Button>+</Button>
+      </Form>
     </Container>
   )
 }
