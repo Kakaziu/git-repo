@@ -1,7 +1,7 @@
 import { FaGithub, FaTrash } from 'react-icons/fa'
 import { IoMdMenu } from "react-icons/io";
 import { Button, Container, Form, InputForm, Repo, ReposContainer, Title } from "./styles"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,16 @@ function Home() {
   const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState("")
   const [repos, setRepos] = useState([])
+
+  useEffect(() => {
+    const repos = JSON.parse(localStorage.getItem("repos"))
+
+    if (repos) setRepos(repos)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("repos", JSON.stringify(repos))
+  }, [repos])
 
   async function addRepo(e) {
     e.preventDefault()
