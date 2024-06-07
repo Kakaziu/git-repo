@@ -1,9 +1,11 @@
-import { useParams } from "react-router-dom"
-import { Button, Buttons, Container, Issue, Issues, SubTitle, Title } from "./styles"
+import { useNavigate, useParams } from "react-router-dom"
+import { Button, Buttons, Container, Issue, Issues, ReturnButton, SubTitle, Title } from "./styles"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import { FaArrowLeft } from 'react-icons/fa'
 
 function IssuesPage() {
+  const navigate = useNavigate()
   const { owner, repo } = useParams()
   const [thisRepo, setThisRepo] = useState(null)
   const [issues, setIssues] = useState([])
@@ -63,6 +65,7 @@ function IssuesPage() {
           </Issue>
         )) }
       </Issues>
+      <ReturnButton onClick={() => navigate("/")}><FaArrowLeft size="25"/></ReturnButton>
     </Container>
   )
 }

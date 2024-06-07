@@ -20,6 +20,7 @@ export const Container = styled.div`
 export const Title = styled.h1`
   text-align: center;
   color: #0d0f38;
+  margin-top: 20px;
 `
 
 export const SubTitle = styled.span`
@@ -81,5 +82,10 @@ export const Issue = styled.a`
 `
 
 export const ReturnButton = styled.button`
-  
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  cursor: pointer;
 `
