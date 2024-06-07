@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { Button, Buttons, Container, SubTitle, Title } from "./styles"
+import { Button, Buttons, Container, Issue, Issues, SubTitle, Title } from "./styles"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -33,13 +33,27 @@ function IssuesPage() {
   return(
     <Container>
       <Title>{repo.toUpperCase()}</Title>
-      <SubTitle>{thisRepo.description}</SubTitle>
+      <SubTitle>{thisRepo && thisRepo.description}</SubTitle>
 
       <Buttons>
         <Button>Todas</Button>
         <Button>Abertas</Button>
         <Button>Fechadas</Button>
       </Buttons>
+
+      <hr/>
+
+      <Issues>
+        { issues.map(issue => (
+          <Issue key={issue.id}>
+            <img src={issue.user.avatar_url} alt={issue.user.login}/>
+            <div>
+              <p>{issue.title}</p>
+              <span>{issue.user.login}</span>
+            </div>
+          </Issue>
+        )) }
+      </Issues>
     </Container>
   )
 }
