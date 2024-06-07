@@ -45,7 +45,7 @@ function IssuesPage() {
 
       <Issues>
         { issues.map(issue => (
-          <Issue key={issue.id}>
+          <Issue key={issue.id} href={issue.html_url}>
             <img src={issue.user.avatar_url} alt={issue.user.login}/>
             <div>
               <p>{issue.title}</p>

@@ -53,10 +53,12 @@ export const Issues = styled.div`
   margin-top: 25px;
 `
 
-export const Issue = styled.div`
+export const Issue = styled.a`
   margin-top: 20px;
   display: flex;
   gap: 10px;
+  color: black;
+  text-decoration: none;
 
   img {
     width: 40px;
