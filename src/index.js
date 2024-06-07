@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import GlobalStyles from './globalStyles';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import IssuesPage from './pages/IssuesPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,6 +14,7 @@ root.render(
       <GlobalStyles/>
       <Routes>
         <Route path='/' element={<Home />}/>
+        <Route path='/:owner/:repo' element={<IssuesPage/>}/>
       </Routes>
     </BrowserRouter>
 );

@@ -3,8 +3,10 @@ import { IoMdMenu } from "react-icons/io";
 import { Button, Container, Form, InputForm, Repo, ReposContainer, Title } from "./styles"
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState("")
   const [repos, setRepos] = useState([])
 
@@ -55,7 +57,7 @@ function Home() {
                 <button onClick={() => removeRepo(repo.id)}><FaTrash size="16"/></button>
                 {repo.full_name}
               </span>
-              <button><IoMdMenu size="25"/></button>
+              <button onClick={() => navigate(repo.full_name)}><IoMdMenu size="25"/></button>
             </Repo>
         )) }
       </ReposContainer>
