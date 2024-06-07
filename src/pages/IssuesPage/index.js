@@ -7,6 +7,7 @@ function IssuesPage() {
   const { owner, repo } = useParams()
   const [thisRepo, setThisRepo] = useState(null)
   const [issues, setIssues] = useState([])
+  const [chooseIssues, setChooseIssues] = useState([])
 
   useEffect(() => {
     async function loadData() {
@@ -19,6 +20,7 @@ function IssuesPage() {
 
         if(responseIssues.ok && responseRepo.ok) {
           setIssues(jsonIssues)
+          setChooseIssues(jsonIssues)
           setThisRepo(jsonRepo)
         }
         else toast.error("Not found")
@@ -30,21 +32,28 @@ function IssuesPage() {
     loadData()
   }, [owner, repo])
 
+  function filterIssues(filter) {
+    if (filter === "todas") return setChooseIssues(issues)
+
+    const filteredIssues = issues.filter(issue => issue.state === filter)
+    setChooseIssues(filteredIssues)
+  }
+
   return(
     <Container>
       <Title>{repo.toUpperCase()}</Title>
       <SubTitle>{thisRepo && thisRepo.description}</SubTitle>
 
       <Buttons>
-        <Button>Todas</Button>
-        <Button>Abertas</Button>
-        <Button>Fechadas</Button>
+        <Button onClick={() => filterIssues("todas")}>Todas</Button>
+        <Button onClick={() => filterIssues("open")}>Abertas</Button>
+        <Button onClick={() => filterIssues("close")}>Fechadas</Button>
       </Buttons>
 
       <hr/>
 
       <Issues>
-        { issues.map(issue => (
+        { chooseIssues.map(issue => (
           <Issue key={issue.id} href={issue.html_url}>
             <img src={issue.user.avatar_url} alt={issue.user.login}/>
             <div>
