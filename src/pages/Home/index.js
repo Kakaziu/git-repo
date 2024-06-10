@@ -30,6 +30,13 @@ function Home() {
         const response = await fetch(`https://api.github.com/repos/${searchValue}`)
         const json = await response.json()
 
+        const hasRepo = repos.find(repo => repo.name === searchValue)
+
+        if(hasRepo) {
+          toast.warn("Repositório já consta na lista")
+          throw new Error("Repositório já consta na lista")
+        }
+
         const data = {
           name: json.full_name
         }
@@ -39,6 +46,7 @@ function Home() {
           toast.success("Repositório adicionado")
         } else {
           toast.error("Repositório não encontrado")
+          throw new Error("Repositório não encontrado")
         }
   
         setSearchValue("")
