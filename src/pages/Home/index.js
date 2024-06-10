@@ -1,7 +1,7 @@
 import { FaGithub, FaTrash, FaSpinner, FaPlus } from 'react-icons/fa'
 import { IoMdMenu } from "react-icons/io";
 import { Button, Container, Form, InputForm, Repo, ReposContainer, Title } from "./styles"
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 
@@ -21,35 +21,42 @@ function Home() {
     localStorage.setItem("repos", JSON.stringify(repos))
   }, [repos])
 
-  async function addRepo(e) {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault()
-    const searchData = searchValue.split("/")
 
-    try {
-      setLoading(true)
-      const response = await fetch(`https://api.github.com/repos/${searchData[0]}/${searchData[1]}`)
-      const json = await response.json()
+    async function addRepo() {  
+      try {
+        setLoading(true)
+        const response = await fetch(`https://api.github.com/repos/${searchValue}`)
+        const json = await response.json()
 
-      if(response.ok) {
-        setRepos([...repos, json])
-        toast.success("Repositório adicionado")
-      } else {
-        toast.error("Repositório não encontrado")
-      }
-
-      setSearchValue("")
-    }catch(e) {
-      console.log(e)
-    }finally {
-      setLoading(false)
-    }
-  }
+        const data = {
+          name: json.full_name
+        }
   
-  function removeRepo(id) {
-    const newRepos = repos.filter(repo => repo.id !== id)
-    
+        if(response.ok) {
+          setRepos([...repos, data])
+          toast.success("Repositório adicionado")
+        } else {
+          toast.error("Repositório não encontrado")
+        }
+  
+        setSearchValue("")
+      }catch(e) {
+        console.log(e)
+      }finally {
+        setLoading(false)
+      }
+    }
+
+    addRepo()
+  }, [repos, searchValue])
+  
+  const handleDelete = useCallback((repo) => {
+    const newRepos = repos.filter(r => r.name !== repo.name)
+      
     setRepos(newRepos)
-  }
+  }, [repos])
 
   return(
     <Container>
@@ -57,7 +64,7 @@ function Home() {
         <FaGithub size='22'/>
         <span>Meus repositórios</span>
       </Title>
-      <Form onSubmit={addRepo}>
+      <Form onSubmit={handleSubmit}>
         <InputForm type='text' 
         placeholder='Adicionar repositório' 
         value={searchValue} 
@@ -68,12 +75,12 @@ function Home() {
       </Form>
       <ReposContainer>
         { repos.map(repo => (
-            <Repo key={repo.id}>
+            <Repo key={repo.name}>
               <span>
-                <button onClick={() => removeRepo(repo.id)}><FaTrash size="16"/></button>
-                {repo.full_name}
+                <button onClick={() => handleDelete(repo)}><FaTrash size="16"/></button>
+                {repo.name}
               </span>
-              <button onClick={() => navigate(repo.full_name)}><IoMdMenu size="25"/></button>
+              <button onClick={() => navigate(repo.name)}><IoMdMenu size="25"/></button>
             </Repo>
         )) }
       </ReposContainer>
