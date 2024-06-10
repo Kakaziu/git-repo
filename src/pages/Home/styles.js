@@ -32,7 +32,10 @@ export const InputForm = styled.input`
   border: 1px solid #ccc;
 `
 
-export const Button = styled.button`
+export const Button = styled.button.attrs(props => ({
+  type: 'submit',
+  disabled: props.loading
+}))`
   padding: 9px 12px;
   background-color: #171738;
   color: white;
@@ -42,6 +45,11 @@ export const Button = styled.button`
   border-radius: 3px;
   cursor: pointer;
   transition: 0.3s;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 
   &:hover {
     background-color: #1d1d47;

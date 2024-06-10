@@ -9,6 +9,7 @@ function Home() {
   const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState("")
   const [repos, setRepos] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const repos = JSON.parse(localStorage.getItem("repos"))
@@ -25,6 +26,7 @@ function Home() {
     const searchData = searchValue.split("/")
 
     try {
+      setLoading(true)
       const response = await fetch(`https://api.github.com/repos/${searchData[0]}/${searchData[1]}`)
       const json = await response.json()
 
@@ -38,6 +40,8 @@ function Home() {
       setSearchValue("")
     }catch(e) {
       console.log(e)
+    }finally {
+      setLoading(false)
     }
   }
   
@@ -58,7 +62,7 @@ function Home() {
         placeholder='Adicionar repositório' 
         value={searchValue} 
         onChange={(e) => setSearchValue(e.target.value)}/>
-        <Button>+</Button>
+        <Button loading={loading}>+</Button>
       </Form>
       <ReposContainer>
         { repos.map(repo => (
