@@ -1,4 +1,4 @@
-import { styled } from 'styled-components'
+import { css, keyframes, styled } from 'styled-components'
 
 export const Container = styled.section`
   margin: auto;
@@ -26,10 +26,20 @@ export const Form = styled.form`
 `
 
 export const InputForm = styled.input`
-  width: 93%;
+  width: 92%;
   padding: 8px 12px;
   font-size: 16px;
   border: 1px solid #ccc;
+`
+
+const animated = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 `
 
 export const Button = styled.button.attrs(props => ({
@@ -54,6 +64,12 @@ export const Button = styled.button.attrs(props => ({
   &:hover {
     background-color: #1d1d47;
   }
+
+  ${props => props.loading && css`
+    svg {
+      animation: ${animated} 2s linear infinite
+    }
+  `}  
 `
 
 export const ReposContainer = styled.div`

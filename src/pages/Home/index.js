@@ -1,4 +1,4 @@
-import { FaGithub, FaTrash } from 'react-icons/fa'
+import { FaGithub, FaTrash, FaSpinner, FaPlus } from 'react-icons/fa'
 import { IoMdMenu } from "react-icons/io";
 import { Button, Container, Form, InputForm, Repo, ReposContainer, Title } from "./styles"
 import { useEffect, useState } from 'react'
@@ -62,7 +62,9 @@ function Home() {
         placeholder='Adicionar repositório' 
         value={searchValue} 
         onChange={(e) => setSearchValue(e.target.value)}/>
-        <Button loading={loading}>+</Button>
+        <Button loading={loading}>
+          { loading ? <FaSpinner size={12} color='#FFF'/> : <FaPlus size={12} color='#FFF'/> }
+        </Button>
       </Form>
       <ReposContainer>
         { repos.map(repo => (
