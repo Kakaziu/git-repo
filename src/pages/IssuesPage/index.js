@@ -3,6 +3,7 @@ import { Button, Buttons, Container, Issue, Issues, ReturnButton, SubTitle, Titl
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { FaArrowLeft } from 'react-icons/fa'
+import api from "../../services/api"
 
 function IssuesPage() {
   const navigate = useNavigate()
@@ -17,17 +18,19 @@ function IssuesPage() {
     async function loadData() {
       try {
         const [repoResponse, issuesResponse] = await Promise.all([
-          await fetch(`https://api.github.com/repos/${decodeURIComponent(repo)}/issues`),
-          await fetch(`https://api.github.com/repos/${decodeURIComponent(repo)}`)
+          await api.get(`/repos/${decodeURIComponent(repo)}`),
+          await api.get(`/repos/${decodeURIComponent(repo)}/issues`, {
+            params: {
+              state: 'open',
+              per_page: 5
+            }
+          })
         ])
-       
-        const jsonIssues = await repoResponse.json()
-        const jsonRepo = await issuesResponse.json()
 
-        if(repoResponse.ok && issuesResponse.ok) {
-          setIssues(jsonIssues)
-          setChooseIssues(jsonIssues)
-          setThisRepo(jsonRepo)
+        if(repoResponse.status === 200 && issuesResponse.status === 200) {
+          setIssues(issuesResponse.data)
+          setChooseIssues(issuesResponse.data)
+          setThisRepo(repoResponse.data)
         }
         else toast.error("Not found")
       } catch(e) {

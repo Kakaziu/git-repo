@@ -4,6 +4,7 @@ import { Button, Container, Form, InputForm, Repo, ReposContainer, Title } from 
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 
 function Home() {
   const navigate = useNavigate()
@@ -27,8 +28,7 @@ function Home() {
     async function addRepo() {  
       try {
         setLoading(true)
-        const response = await fetch(`https://api.github.com/repos/${searchValue}`)
-        const json = await response.json()
+        const repoResponse = await api.get(`/repos/${searchValue}`)
 
         const hasRepo = repos.find(repo => repo.name === searchValue)
 
@@ -38,10 +38,10 @@ function Home() {
         }
 
         const data = {
-          name: json.full_name
+          name: repoResponse.data.full_name
         }
   
-        if(response.ok) {
+        if(repoResponse.status === 200) {
           setRepos([...repos, data])
           toast.success("Repositório adicionado")
         } else {
