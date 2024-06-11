@@ -88,7 +88,7 @@ function Home() {
                 <button onClick={() => handleDelete(repo)}><FaTrash size="16"/></button>
                 {repo.name}
               </span>
-              <button onClick={() => navigate(repo.name)}><IoMdMenu size="25"/></button>
+              <button onClick={() => navigate(`repos/${encodeURIComponent(repo.name)}`)}><IoMdMenu size="25"/></button>
             </Repo>
         )) }
       </ReposContainer>

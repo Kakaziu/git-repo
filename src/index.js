@@ -14,7 +14,7 @@ root.render(
       <GlobalStyles/>
       <Routes>
         <Route path='/' element={<Home />}/>
-        <Route path='/:owner/:repo' element={<IssuesPage/>}/>
+        <Route path='/repos/:repo' element={<IssuesPage/>}/>
       </Routes>
     </BrowserRouter>
 );

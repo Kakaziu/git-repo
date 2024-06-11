@@ -6,21 +6,25 @@ import { FaArrowLeft } from 'react-icons/fa'
 
 function IssuesPage() {
   const navigate = useNavigate()
-  const { owner, repo } = useParams()
+  const { repo } = useParams()
   const [thisRepo, setThisRepo] = useState(null)
   const [issues, setIssues] = useState([])
   const [chooseIssues, setChooseIssues] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+
     async function loadData() {
       try {
-        const responseIssues = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues`)
-        const jsonIssues = await responseIssues.json()
+        const [repoResponse, issuesResponse] = await Promise.all([
+          await fetch(`https://api.github.com/repos/${decodeURIComponent(repo)}/issues`),
+          await fetch(`https://api.github.com/repos/${decodeURIComponent(repo)}`)
+        ])
+       
+        const jsonIssues = await repoResponse.json()
+        const jsonRepo = await issuesResponse.json()
 
-        const responseRepo = await fetch(`https://api.github.com/repos/${owner}/${repo}`)
-        const jsonRepo = await responseRepo.json()
-
-        if(responseIssues.ok && responseRepo.ok) {
+        if(repoResponse.ok && issuesResponse.ok) {
           setIssues(jsonIssues)
           setChooseIssues(jsonIssues)
           setThisRepo(jsonRepo)
@@ -28,11 +32,13 @@ function IssuesPage() {
         else toast.error("Not found")
       } catch(e) {
         console.log(e)
+      }finally {
+        setLoading(false)
       }
     }
 
     loadData()
-  }, [owner, repo])
+  }, [repo])
 
   function filterIssues(filter) {
     if (filter === "todas") return setChooseIssues(issues)
