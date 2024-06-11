@@ -8,6 +8,7 @@ export const Container = styled.div`
   padding: 20px;
   margin-top: 40px;
   position: relative;
+  margin-bottom: 30px;
 
   hr {
     margin-top: 20px;
@@ -88,4 +89,26 @@ export const ReturnButton = styled.button`
   left: 15px;
   top: 15px;
   cursor: pointer;
+`
+
+export const PaginationButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+
+  button {
+    padding: 5px 10px;
+    background-color: #0d0f38;
+    color: #FFF;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
 `

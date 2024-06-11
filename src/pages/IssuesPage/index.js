@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { Button, Buttons, Container, Issue, Issues, ReturnButton, SubTitle, Title } from "./styles"
+import { Button, Buttons, Container, Issue, Issues, PaginationButtons, ReturnButton, SubTitle, Title } from "./styles"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { FaArrowLeft } from 'react-icons/fa'
@@ -11,10 +11,10 @@ function IssuesPage() {
   const [thisRepo, setThisRepo] = useState(null)
   const [issues, setIssues] = useState([])
   const [chooseIssues, setChooseIssues] = useState([])
+  const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-
     async function loadData() {
       try {
         const [repoResponse, issuesResponse] = await Promise.all([
@@ -22,6 +22,7 @@ function IssuesPage() {
           await api.get(`/repos/${decodeURIComponent(repo)}/issues`, {
             params: {
               state: 'open',
+              page,
               per_page: 5
             }
           })
@@ -41,7 +42,7 @@ function IssuesPage() {
     }
 
     loadData()
-  }, [repo])
+  }, [repo, page])
 
   function filterIssues(filter) {
     if (filter === "todas") return setChooseIssues(issues)
@@ -52,7 +53,7 @@ function IssuesPage() {
 
   return(
     <Container>
-      <Title>{repo.toUpperCase()}</Title>
+      <Title>{thisRepo && thisRepo.name.toUpperCase()}</Title>
       <SubTitle>{thisRepo && thisRepo.description}</SubTitle>
 
       <Buttons>
@@ -74,6 +75,10 @@ function IssuesPage() {
           </Issue>
         )) }
       </Issues>
+      <PaginationButtons>
+        <button onClick={() => setPage(page => page - 1)} disabled={page === 1}>Voltar</button>
+        <button onClick={() => setPage(page => page + 1)} disabled={page === 5}>Próximo</button>
+      </PaginationButtons>
       <ReturnButton onClick={() => navigate("/")}><FaArrowLeft size="25"/></ReturnButton>
     </Container>
   )
